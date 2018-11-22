@@ -1135,8 +1135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16a620e535b32154fa5ef10b561d0f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelSize: 1000
-  nChunks: 20
+  LevelSize: 100
+  nChunks: 10
   DifficultyCurveParams:
     a: 0.5
     b: 1.8
@@ -1144,7 +1144,7 @@ MonoBehaviour:
   EvolutionParams:
     populationSize: 100
     nGroups: 10
-    nIterations: 1000
+    nIterations: 2000
     mutProb: 0.1
   LevelReady: 0
   Level: 
