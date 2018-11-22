@@ -1082,6 +1082,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1571505720}
   - component: {fileID: 1571505719}
+  - component: {fileID: 1571505721}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -1123,6 +1124,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1571505721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1571505718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16a620e535b32154fa5ef10b561d0f98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LevelSize: 1000
+  nChunks: 20
+  DifficultyCurveParams:
+    a: 0.5
+    b: 1.8
+    k: -0.7
+  EvolutionParams:
+    populationSize: 100
+    nGroups: 10
+    nIterations: 1000
+    mutProb: 0.1
+  LevelReady: 0
+  Level: 
 --- !u!4 &1762822690 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4411754273636138, guid: 9f06735b9d4ca364cb663f70bf90c6df,
