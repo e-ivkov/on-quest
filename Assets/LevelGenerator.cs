@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 
 public class LevelGenerator : MonoBehaviour {
 
@@ -43,11 +44,12 @@ public class LevelGenerator : MonoBehaviour {
 
 	public bool LevelReady = false;
     public LevelElement[] Level;
+	private Task _genTask;
 	
 	// Use this for initialization
 	void Start ()
 	{
-		StartCoroutine(GenerateLevel());
+		_genTask = Task.Run(() => GenerateLevel());
 	}
 	
 	// Update is called once per frame
@@ -63,7 +65,7 @@ public class LevelGenerator : MonoBehaviour {
 		return a * Mathf.Sin(k * x) + b * x;
 	}
 
-	private IEnumerator GenerateLevel()
+	private void GenerateLevel()
 	{
 		Level = new LevelElement[LevelSize];
 		for(var i = 0; i < nChunks; i++)
@@ -75,7 +77,6 @@ public class LevelGenerator : MonoBehaviour {
 			var chunk = GenerateLevelChunk(difficulty, LevelSize / nChunks, eParams.populationSize, eParams.nGroups,
 				eParams.nIterations, eParams.mutProb);
 			Array.Copy(chunk, 0, Level, i * chunkSize, chunkSize);
-			yield return null;
 		}
 		LevelReady = true;
 	}
@@ -143,21 +144,24 @@ public class LevelGenerator : MonoBehaviour {
 		public static Chromosome GetRandom(int levelSize)
 		{
 			var nElements = Enum.GetNames(typeof(LevelElement)).Length;
+			var rand = new Random();
 			return new Chromosome(Enumerable.Repeat(0, levelSize)
-				.Select(i => (LevelElement) Random.Range(0, nElements - 1)).ToArray());
+				.Select(i => (LevelElement) rand.Next(nElements)).ToArray());
 		}
 
 		public static Chromosome Mutate(Chromosome chromosome, float prob)
 		{
 			var nElements = Enum.GetNames(typeof(LevelElement)).Length;
+			var rand = new Random();
 			return new Chromosome(chromosome._levelElements.AsEnumerable()
-				.Select(e => Random.value > prob ? (LevelElement) Random.Range(0, nElements - 1) : e).ToArray());
+				.Select(e => rand.NextDouble() > prob ? (LevelElement) rand.Next(nElements) : e).ToArray());
 		}
 
 		public static Chromosome OnePointCrossover(Chromosome first, Chromosome second)
 		{
 			var length = first.LevelElements.Length;
-			var splitPoint = Random.Range(0, length);
+			var rand = new Random();
+			var splitPoint = rand.Next(length);
 			var child = new LevelElement[length];
 			Array.Copy(first.LevelElements, child, splitPoint);
 			Array.Copy(first.LevelElements, splitPoint, child, splitPoint, length-splitPoint);
