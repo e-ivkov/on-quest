@@ -60,7 +60,22 @@ public class SkeletonScript : MonoBehaviour
 		Debug.Log(state.fullPathHash);
 		if ((int) dodge != (int) Monster)
 		{
-			other.GetComponent<KnightBehavior>().GetDamage(1);
+			StartCoroutine(Attack(other.GetComponent<KnightBehavior>()));
 		}
+	}
+
+	private IEnumerator Attack(KnightBehavior knight)
+	{
+		var animator = GetComponent<Animator>();
+		animator.SetTrigger("kill");
+		while (!animator.GetCurrentAnimatorStateInfo(0).IsName("attack"))
+		{
+			yield return null;
+		}		
+		while (animator.GetCurrentAnimatorStateInfo(0).IsName("attack"))
+        {
+            yield return null;
+        }
+		knight.GetDamage(1);
 	}
 }
