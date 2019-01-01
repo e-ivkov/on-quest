@@ -10,6 +10,9 @@ public class KnightBehavior : MonoBehaviour
 	[HideInInspector]
 	public bool Running;
 
+    public float StartSpeed;
+
+    [HideInInspector]
 	public float Speed;
 
 	public float JumpForce;
@@ -17,6 +20,8 @@ public class KnightBehavior : MonoBehaviour
 	private Animator _animator;
 	private Rigidbody2D _rig;
 	private bool grounded = true;
+
+    private bool _recieveInput = true;
 
 	public float SpeedInc;
 
@@ -36,16 +41,21 @@ public class KnightBehavior : MonoBehaviour
 			var scroller = o.GetComponent<BackgroundScroller>();
 			scroller.enabled = Running;
 		}
-		if(Running)
-			Speed += SpeedInc * Time.deltaTime;
+        if (Running)
+            Speed += SpeedInc * Time.deltaTime;
+        else
+            Speed = 0;
 	}
 
 	void UpdateAnimationSates()
 	{
+        if (!_recieveInput)
+            return;
 		if (Input.GetKeyDown("return"))
 		{
 			_animator.SetTrigger("run");
-			Running = true;
+            Speed = StartSpeed;
+            Running = true;
 		}
 		if (Input.GetKeyDown("a"))
 		{
@@ -68,6 +78,13 @@ public class KnightBehavior : MonoBehaviour
 			_animator.SetTrigger("dash");
 		}
 	}
+
+    public void PrepareToDie()
+    {
+        Running = false;
+        _animator.SetTrigger("prepare_to_die");
+        _recieveInput = false;
+    }
 
 	public void GetDamage(int dmg)
 	{

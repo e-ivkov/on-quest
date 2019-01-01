@@ -12,7 +12,9 @@ public class BackgroundScroller : MonoBehaviour {
 	private Renderer _renderer;
 	private float _playerSpeed;
 
-	void Start ()
+    public float PlayerSpeed { get => _playerSpeed; set => _playerSpeed = value; }
+
+    void Start ()
 	{
 		_renderer = GetComponent<Renderer>();
 		_savedOffset = _renderer.sharedMaterial.GetTextureOffset ("_MainTex");
@@ -20,8 +22,8 @@ public class BackgroundScroller : MonoBehaviour {
 	}
 	//0.01 * player_speed and 0.71 * player_speed
 	void Update () {
-		_playerSpeed = GameObject.FindGameObjectWithTag("Player").GetComponent<KnightBehavior>().Speed;
-		var x = Time.deltaTime * ScrollSpeed * _playerSpeed;
+		PlayerSpeed = GameObject.FindGameObjectWithTag("Player").GetComponent<KnightBehavior>().Speed;
+		var x = Time.deltaTime * ScrollSpeed * PlayerSpeed;
 		var offset = _renderer.sharedMaterial.GetTextureOffset ("_MainTex") + new Vector2 (x, 0);
 		_renderer.sharedMaterial.SetTextureOffset ("_MainTex", offset);
 	}

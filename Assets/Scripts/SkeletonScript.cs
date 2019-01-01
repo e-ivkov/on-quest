@@ -67,6 +67,7 @@ public class SkeletonScript : MonoBehaviour
 	private IEnumerator Attack(KnightBehavior knight)
 	{
 		var animator = GetComponent<Animator>();
+        knight.PrepareToDie();
 		animator.SetTrigger("kill");
 		while (!animator.GetCurrentAnimatorStateInfo(0).IsName("attack"))
 		{
