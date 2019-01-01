@@ -77,6 +77,6 @@ public class SkeletonScript : MonoBehaviour
         {
             yield return null;
         }
-		knight.GetDamage(1);
+		yield return knight.GetDamage(1);
 	}
 }

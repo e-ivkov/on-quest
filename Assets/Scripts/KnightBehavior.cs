@@ -86,12 +86,21 @@ public class KnightBehavior : MonoBehaviour
         _recieveInput = false;
     }
 
-	public void GetDamage(int dmg)
+	public IEnumerator GetDamage(int dmg)
 	{
 		if (dmg > 0)
 		{
-			//game over
-			SceneManager.LoadScene( SceneManager.GetActiveScene().buildIndex ) ;
+            //game over
+            _animator.SetTrigger("die");
+            while (!_animator.GetCurrentAnimatorStateInfo(0).IsName("dying"))
+            {
+                yield return null;
+            }
+            while (_animator.GetCurrentAnimatorStateInfo(0).IsName("dying"))
+            {
+                yield return null;
+            }
+            SceneManager.LoadScene( SceneManager.GetActiveScene().buildIndex ) ;
 		}
 	}
 
