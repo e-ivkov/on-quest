@@ -45,24 +45,28 @@ public class SkeletonScript : MonoBehaviour
 	{
 		if(!other.CompareTag("Player"))
 			return;
-		var animator = other.gameObject.GetComponent<Animator>();
-		var state = animator.GetCurrentAnimatorStateInfo(0);
-		var cases = new Dictionary<int, DodgeType>()
-		{
-			{ Animator.StringToHash("attacking"), DodgeType.Attack },
-			{ Animator.StringToHash("blocking"), DodgeType.Defend },
-			{ Animator.StringToHash("dashing"), DodgeType.Dash },
-			{ Animator.StringToHash("jumping"), DodgeType.Jump },
-		};
-
-		var dodge = DodgeType.None;
-		cases.TryGetValue(state.shortNameHash, out dodge);
-		Debug.Log(state.fullPathHash);
-		if ((int) dodge != (int) Monster)
-		{
-			StartCoroutine(Attack(other.GetComponent<KnightBehavior>()));
-		}
+        if (!CheckPlayerAction(other.gameObject)) {
+            StartCoroutine(Attack(other.GetComponent<KnightBehavior>()));
+        }
 	}
+
+    public bool CheckPlayerAction(GameObject player)
+    {
+        var animator = player.gameObject.GetComponent<Animator>();
+        var state = animator.GetCurrentAnimatorStateInfo(0);
+        var cases = new Dictionary<int, DodgeType>()
+        {
+            { Animator.StringToHash("attacking"), DodgeType.Attack },
+            { Animator.StringToHash("blocking"), DodgeType.Defend },
+            { Animator.StringToHash("dashing"), DodgeType.Dash },
+            { Animator.StringToHash("jumping"), DodgeType.Jump },
+        };
+
+        var dodge = DodgeType.None;
+        cases.TryGetValue(state.shortNameHash, out dodge);
+        Debug.Log(state.fullPathHash);
+        return (int)dodge == (int)Monster;
+    }
 
 	private IEnumerator Attack(KnightBehavior knight)
 	{
