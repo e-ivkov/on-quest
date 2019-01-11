@@ -25,6 +25,8 @@ public class KnightBehavior : MonoBehaviour
 
 	public float SpeedInc;
 
+    public GameObject MainMenu;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -47,15 +49,26 @@ public class KnightBehavior : MonoBehaviour
             Speed = 0;
 	}
 
+    public void StartGame()
+    {
+        _animator.SetTrigger("run");
+        Speed = StartSpeed;
+        Running = true;
+        MainMenu.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
 	void UpdateAnimationSates()
 	{
         if (!_recieveInput)
             return;
 		if (Input.GetKeyDown("return"))
 		{
-			_animator.SetTrigger("run");
-            Speed = StartSpeed;
-            Running = true;
+            StartGame();
 		}
 		if (Input.GetKeyDown("a"))
 		{
