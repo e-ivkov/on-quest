@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class KnightBehavior : MonoBehaviour
 {
@@ -23,16 +24,24 @@ public class KnightBehavior : MonoBehaviour
 
     private bool _recieveInput = true;
 
+    private float _score = 0;
+
+    public float ScoreMultiplier;
+
 	public float SpeedInc;
 
     public GameObject MainMenu;
+
+    public Text ScoreText;
 
 	// Use this for initialization
 	void Start ()
 	{
 		_animator = GetComponent<Animator>();
 		_rig = GetComponent<Rigidbody2D>();
-	}
+        int maxScore = PlayerPrefs.GetInt("maxScore", 0);
+        ScoreText.text = "Max Score: " + maxScore.ToString();
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -44,7 +53,11 @@ public class KnightBehavior : MonoBehaviour
 			scroller.enabled = Running;
 		}
         if (Running)
+        {
             Speed += SpeedInc * Time.deltaTime;
+            _score += ScoreMultiplier * Speed;
+            ScoreText.text = "Score: " + ((int)_score).ToString();
+        }
         else
             Speed = 0;
 	}
@@ -112,6 +125,12 @@ public class KnightBehavior : MonoBehaviour
             while (_animator.GetCurrentAnimatorStateInfo(0).IsName("dying"))
             {
                 yield return null;
+            }
+            int maxScore = PlayerPrefs.GetInt("maxScore", 0);
+            if((int)_score > maxScore)
+            {
+                PlayerPrefs.SetInt("maxScore", (int)_score);
+                PlayerPrefs.Save();
             }
             SceneManager.LoadScene( SceneManager.GetActiveScene().buildIndex ) ;
 		}
