@@ -13,6 +13,8 @@ public class KnightBehavior : MonoBehaviour
 
     public float StartSpeed;
 
+    public float AnimMultiplier;
+
     [HideInInspector]
 	public float Speed;
 
@@ -57,6 +59,7 @@ public class KnightBehavior : MonoBehaviour
             Speed += SpeedInc * Time.deltaTime;
             _score += ScoreMultiplier * Speed;
             ScoreText.text = "Score: " + ((int)_score).ToString();
+            _animator.SetFloat("speed", 1 + (Speed - StartSpeed)*AnimMultiplier);
         }
         else
             Speed = 0;

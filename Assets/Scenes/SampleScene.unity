@@ -572,6 +572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Running: 0
   StartSpeed: 3
+  AnimMultiplier: 0.1
   Speed: 3
   JumpForce: 8
   ScoreMultiplier: 0.01
