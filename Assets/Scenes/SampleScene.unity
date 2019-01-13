@@ -571,7 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Running: 0
-  StartSpeed: 3
+  StartSpeed: 6
   AnimMultiplier: 0.1
   Speed: 3
   JumpForce: 8
@@ -1551,7 +1551,9 @@ MonoBehaviour:
   HoundSpawnPosition: {fileID: 2069966999}
   OculothraxSpawnPosition: {fileID: 1762822690}
   Probability: 0.6
-  SpawnPeriod: 2
+  SpawnDistance: 6
+  StartSpawnDistance: 0
+  Player: {fileID: 782934097}
 --- !u!4 &1571505720
 Transform:
   m_ObjectHideFlags: 0

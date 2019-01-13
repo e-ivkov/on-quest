@@ -15,12 +15,16 @@ public class SpawnerScript : MonoBehaviour
     public Transform OculothraxSpawnPosition;
 
     public float Probability;
-    public int SpawnPeriod;
+    public float SpawnDistance;
+    public float StartSpawnDistance;
     private LevelGenerator _levelGenerator;
+    public GameObject Player;
+    private float _nextDistance;
 
     // Use this for initialization
     void Start()
     {
+        _nextDistance = StartSpawnDistance;
         StartCoroutine(Spawn());
         _levelGenerator = GetComponent<LevelGenerator>();
     }
@@ -30,8 +34,9 @@ public class SpawnerScript : MonoBehaviour
         var enemyCounter = 0;
         while (enabled)
         {
-            yield return new WaitForSeconds(SpawnPeriod);
-            if (!GameObject.FindGameObjectWithTag("Player").GetComponent<KnightBehavior>().Running ||
+            yield return new WaitUntil(() => Player.GetComponent<KnightBehavior>().Distance >= _nextDistance);
+            _nextDistance = Player.GetComponent<KnightBehavior>().Distance + SpawnDistance;
+            if (!Player.GetComponent<KnightBehavior>().Running ||
                 !_levelGenerator.LevelReady || enemyCounter >= _levelGenerator.Level.Length) continue;
             switch (_levelGenerator.Level[enemyCounter])
             {

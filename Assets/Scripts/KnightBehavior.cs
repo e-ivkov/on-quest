@@ -26,6 +26,8 @@ public class KnightBehavior : MonoBehaviour
 
     private bool _recieveInput = true;
 
+    private float _distance = 0;
+
     private float _score = 0;
 
     public float ScoreMultiplier;
@@ -36,8 +38,10 @@ public class KnightBehavior : MonoBehaviour
 
     public Text ScoreText;
 
-	// Use this for initialization
-	void Start ()
+    public float Distance { get => _distance; private set => _distance = value; }
+
+    // Use this for initialization
+    void Start ()
 	{
 		_animator = GetComponent<Animator>();
 		_rig = GetComponent<Rigidbody2D>();
@@ -57,7 +61,8 @@ public class KnightBehavior : MonoBehaviour
         if (Running)
         {
             Speed += SpeedInc * Time.deltaTime;
-            _score += ScoreMultiplier * Speed;
+            Distance += ScoreMultiplier * Speed;
+            _score = Distance;
             ScoreText.text = "Score: " + ((int)_score).ToString();
             _animator.SetFloat("speed", 1 + (Speed - StartSpeed)*AnimMultiplier);
         }
