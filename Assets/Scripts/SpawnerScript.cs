@@ -40,15 +40,15 @@ public class SpawnerScript : MonoBehaviour
                 !_levelGenerator.LevelReady || enemyCounter >= _levelGenerator.Level.Length) continue;
             switch (_levelGenerator.Level[enemyCounter])
             {
-                 case LevelGenerator.LevelElement.Beast: Instantiate(Hound, HoundSpawnPosition.position, Quaternion.identity);
+                 case LevelElement.Beast: Instantiate(Hound, HoundSpawnPosition.position, Quaternion.identity);
                         break;
-                 case LevelGenerator.LevelElement.Harpy: Instantiate(Oculothrax, OculothraxSpawnPosition.position, Quaternion.identity);
+                 case LevelElement.Harpy: Instantiate(Oculothrax, OculothraxSpawnPosition.position, Quaternion.identity);
                      break;
-                 case LevelGenerator.LevelElement.Ogre: Instantiate(Ogre, OgreSpawnPosition.position, Quaternion.identity);
+                 case LevelElement.Ogre: Instantiate(Ogre, OgreSpawnPosition.position, Quaternion.identity);
                      break;
-                 case LevelGenerator.LevelElement.Skeleton: Instantiate(Skeleton, SkeletonSpawnPosition.position, Quaternion.identity);
+                 case LevelElement.Skeleton: Instantiate(Skeleton, SkeletonSpawnPosition.position, Quaternion.identity);
                      break;
-                case LevelGenerator.LevelElement.None:
+                case LevelElement.None:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
