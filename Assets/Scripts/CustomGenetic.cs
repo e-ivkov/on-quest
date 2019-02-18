@@ -34,8 +34,8 @@ public class CustomGenetic
                 var difficulty = 0;
                 for (var i = 0; i < _levelElements.Length - 1; i++)
                 {
-                    var type1 = GetElementType(_levelElements[i]);
-                    var type2 = GetElementType(_levelElements[i + 1]);
+                    var type1 = _levelElements[i].GetElementType();
+                    var type2 = _levelElements[i + 1].GetElementType();
                     if (type1 == type2 && type1 > 0)
                         difficulty += 2;
                     else if (Mathf.Abs(type1 - type2) == 1 && type1 > 0 && type2 > 0)
@@ -46,20 +46,6 @@ public class CustomGenetic
 
                 return difficulty;
             }
-        }
-
-        public static int GetElementType(LevelElement element)
-        {
-            switch (element)
-            {
-                case LevelElement.Ogre:
-                case LevelElement.Skeleton:
-                    return 1;
-                case LevelElement.Harpy:
-                case LevelElement.Beast:
-                    return 2;
-            }
-            return 0;
         }
 
         public Chromosome(LevelElement[] levelElements)

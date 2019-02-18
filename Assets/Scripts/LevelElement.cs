@@ -6,3 +6,20 @@
     Beast = 3,
     Skeleton = 4
 }
+
+public static class LevelElementExtensions
+{
+    public static int GetElementType(this LevelElement element)
+    {
+        switch (element)
+        {
+            case LevelElement.Ogre:
+            case LevelElement.Skeleton:
+                return 1;
+            case LevelElement.Harpy:
+            case LevelElement.Beast:
+                return 2;
+        }
+        return 0;
+    }
+}
