@@ -11,7 +11,7 @@ public class LevelChunkFitness : IFitness
         private set;
     }
 
-    public LevelChunkFitness(int targetDifficulty)
+    public LevelChunkFitness(float targetDifficulty)
     {
         TargetDifficulty = targetDifficulty;
     }
