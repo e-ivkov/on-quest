@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using Random = System.Random;
+using GeneticSharp.Domain;
 
 public class LevelGenerator : MonoBehaviour {
 
