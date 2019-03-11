@@ -38,6 +38,8 @@ public class KnightBehavior : MonoBehaviour
 
     public Text ScoreText;
 
+    public GameObject TutorialCanvas;
+
     public float Distance { get => _distance; private set => _distance = value; }
     public GameMode GameMode { get; private set; }
 
@@ -110,7 +112,8 @@ public class KnightBehavior : MonoBehaviour
 
     public void ShowTutorialMessage(SkeletonScript enemy, MissScript missScript)
     {
-        //show ui
+        TutorialCanvas.SetActive(true);
+        TutorialCanvas.GetComponent<TutorialTextScript>().ShowHint(enemy.Monster);
         Freeze();
         _waitingForTutorialInput = true;
         _tutorialActionHandler = (dodge) =>
@@ -119,7 +122,7 @@ public class KnightBehavior : MonoBehaviour
             {
                 missScript.Miss();
                 _waitingForTutorialInput = false;
-                //hide ui
+                TutorialCanvas.SetActive(false);
                 StartRunning();
             }
         };

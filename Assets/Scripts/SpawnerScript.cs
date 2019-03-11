@@ -9,6 +9,7 @@ public class SpawnerScript : MonoBehaviour
     public GameObject Ogre;
     public GameObject Hound;
     public GameObject Oculothrax;
+    public GameObject Restarter;
     public Transform SkeletonSpawnPosition;
     public Transform OgreSpawnPosition;
     public Transform HoundSpawnPosition;
@@ -40,14 +41,21 @@ public class SpawnerScript : MonoBehaviour
                 !_levelGenerator.LevelReady || enemyCounter >= _levelGenerator.Level.Length) continue;
             switch (_levelGenerator.Level[enemyCounter])
             {
-                 case LevelElement.Beast: Instantiate(Hound, HoundSpawnPosition.position, Quaternion.identity);
-                        break;
-                 case LevelElement.Harpy: Instantiate(Oculothrax, OculothraxSpawnPosition.position, Quaternion.identity);
-                     break;
-                 case LevelElement.Ogre: Instantiate(Ogre, OgreSpawnPosition.position, Quaternion.identity);
-                     break;
-                 case LevelElement.Skeleton: Instantiate(Skeleton, SkeletonSpawnPosition.position, Quaternion.identity);
-                     break;
+                case LevelElement.Beast:
+                    Instantiate(Hound, HoundSpawnPosition.position, Quaternion.identity);
+                    break;
+                case LevelElement.Harpy:
+                    Instantiate(Oculothrax, OculothraxSpawnPosition.position, Quaternion.identity);
+                    break;
+                case LevelElement.Ogre:
+                    Instantiate(Ogre, OgreSpawnPosition.position, Quaternion.identity);
+                    break;
+                case LevelElement.Skeleton:
+                    Instantiate(Skeleton, SkeletonSpawnPosition.position, Quaternion.identity);
+                    break;
+                case LevelElement.Restarter:
+                    Instantiate(Restarter, SkeletonSpawnPosition.position, Quaternion.identity);
+                    break;
                 case LevelElement.None:
                     break;
                 default:

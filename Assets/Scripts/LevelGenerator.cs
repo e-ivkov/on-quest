@@ -72,7 +72,7 @@ public class LevelGenerator : MonoBehaviour {
 
     private void GenerateTutorial()
     {
-        Level = new LevelElement[] { LevelElement.Beast, LevelElement.Harpy, LevelElement.Skeleton, LevelElement.Ogre };
+        Level = new LevelElement[] { LevelElement.Beast, LevelElement.Harpy, LevelElement.Skeleton, LevelElement.Ogre, LevelElement.Restarter };
     }
 	
 	/*
