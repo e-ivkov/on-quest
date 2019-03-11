@@ -39,6 +39,7 @@ public class KnightBehavior : MonoBehaviour
     public Text ScoreText;
 
     public float Distance { get => _distance; private set => _distance = value; }
+    public GameMode GameMode { get; private set; }
 
     // Use this for initialization
     void Start ()
@@ -70,11 +71,25 @@ public class KnightBehavior : MonoBehaviour
             Speed = 0;
 	}
 
-    public void StartGame()
+    private void StartRunning()
     {
+        _animator.enabled = true;
         _animator.SetTrigger("run");
         Speed = StartSpeed;
         Running = true;
+    }
+
+    public void StartGame()
+    {
+        GameMode = GameMode.Game;
+        StartRunning();
+        MainMenu.SetActive(false);
+    }
+
+    public void StartTutorial()
+    {
+        GameMode = GameMode.Tutorial;
+        StartRunning();
         MainMenu.SetActive(false);
     }
 
@@ -83,10 +98,38 @@ public class KnightBehavior : MonoBehaviour
         Application.Quit();
     }
 
+    public void Freeze()
+    {
+        Running = false;
+        _animator.enabled = false;
+    }
+
+    private delegate void TutorialActionHandler(DodgeType dodge);
+    private TutorialActionHandler _tutorialActionHandler;
+    private bool _waitingForTutorialInput = false;
+
+    public void ShowTutorialMessage(SkeletonScript enemy, MissScript missScript)
+    {
+        //show ui
+        Freeze();
+        _waitingForTutorialInput = true;
+        _tutorialActionHandler = (dodge) =>
+        {
+            if ((int)dodge == (int)enemy.Monster)
+            {
+                missScript.Miss();
+                _waitingForTutorialInput = false;
+                //hide ui
+                StartRunning();
+            }
+        };
+    }
+
 	void UpdateAnimationSates()
 	{
         if (!_recieveInput)
             return;
+        var action = DodgeType.None;
 		if (Input.GetKeyDown("return"))
 		{
             StartGame();
@@ -94,23 +137,30 @@ public class KnightBehavior : MonoBehaviour
 		if (Input.GetKeyDown("a"))
 		{
 			_animator.SetTrigger("attack");
+            action = DodgeType.Attack;
 		}
 		if (Input.GetKeyDown("d"))
-		{
-			
+		{			
 			_animator.SetTrigger("block");
-		}
+            action = DodgeType.Defend;
+        }
 		if (Input.GetKeyDown("w") && grounded)
 		{
 			_animator.ResetTrigger("land");
 			_animator.SetTrigger("jump");
 			_rig.AddForce(Vector2.up*JumpForce, ForceMode2D.Impulse);
 			grounded = false;
-		}
+            action = DodgeType.Jump;
+        }
 		if (Input.GetKeyDown("s"))
 		{
 			_animator.SetTrigger("dash");
-		}
+            action = DodgeType.Dash;
+        }
+        if (_waitingForTutorialInput)
+        {
+            _tutorialActionHandler(action);
+        }
 	}
 
     public void PrepareToDie()

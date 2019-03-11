@@ -49,8 +49,18 @@ public class LevelGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
+        var knight = GameObject.FindGameObjectWithTag("Player").GetComponent<KnightBehavior>();
 		_genTask = Task.Run(() => {
-            GenerateLevelGS();
+            switch (knight.GameMode)
+            {
+                case GameMode.Game:
+                    GenerateLevelGS();
+                    break;
+                case GameMode.Tutorial:
+                    GenerateTutorial();
+                    break;
+            }
+                
             LevelReady = true;
         });
 	}
@@ -59,6 +69,11 @@ public class LevelGenerator : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    private void GenerateTutorial()
+    {
+        Level = new LevelElement[] { LevelElement.Beast, LevelElement.Harpy, LevelElement.Skeleton, LevelElement.Ogre };
+    }
 	
 	/*
 	 * y = a*sin(k*x) + b*x
