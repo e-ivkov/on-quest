@@ -4,30 +4,30 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public enum MonsterType
+{
+    Ogre = 1,
+    Harpy = 2,
+    Beast = 3,
+    Skeleton = 4,
+}
+
+public enum DodgeType
+{
+    None = 0,
+    Defend = 1,
+    Dash = 2,
+    Jump = 3,
+    Attack = 4
+}
+
 public class SkeletonScript : MonoBehaviour
 {
 
 	public const float Velocity = 0.71f;
 	private float _playerVelocity;
-
-	public enum MonsterType
-	{
-		Ogre = 1,
-		Harpy = 2,
-		Beast = 3,
-		Skeleton = 4,
-	}
 	
 	public MonsterType Monster;
-	
-	public enum DodgeType
-	{
-		None = 0,
-		Defend= 1,
-		Dash = 2,
-		Jump = 3,
-		Attack = 4
-	}
 
 	// Use this for initialization
 	void Start ()
@@ -47,8 +47,9 @@ public class SkeletonScript : MonoBehaviour
             Destroy(gameObject);
 		if(!other.CompareTag("Player"))
 			return;
-        if (!CheckPlayerAction(other.gameObject)) {
-            StartCoroutine(Attack(other.GetComponent<KnightBehavior>()));
+        var knight = other.GetComponent<KnightBehavior>();
+        if (!CheckPlayerAction(other.gameObject) && knight.GameMode == GameMode.Game) {
+            StartCoroutine(Attack(knight));
         }
 	}
 

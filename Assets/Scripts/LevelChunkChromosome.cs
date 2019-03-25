@@ -6,7 +6,7 @@ using GeneticSharp.Domain.Randomizations;
 
 public class LevelChunkChromosome : ChromosomeBase
 {
-    private readonly int enemyTypesCount = System.Enum.GetNames(typeof(LevelElement)).Length;
+    private readonly int enemyTypesCount = System.Enum.GetNames(typeof(LevelElement)).Length-1; // length - Restarter
 
     public LevelChunkChromosome(int length) : base(length)
     {

@@ -4,7 +4,8 @@
     Ogre = 1,
     Harpy = 2,
     Beast = 3,
-    Skeleton = 4
+    Skeleton = 4,
+    Restarter = 5,
 }
 
 public static class LevelElementExtensions
