@@ -38,7 +38,12 @@ public class KnightBehavior : MonoBehaviour
 
     public Text ScoreText;
 
+    public GameObject TutorialCanvas;
+
     public float Distance { get => _distance; private set => _distance = value; }
+    public GameMode GameMode { get; private set; } = GameMode.Game;
+
+    public LevelGenerator LevelGenerator;
 
     // Use this for initialization
     void Start ()
@@ -47,6 +52,7 @@ public class KnightBehavior : MonoBehaviour
 		_rig = GetComponent<Rigidbody2D>();
         int maxScore = PlayerPrefs.GetInt("maxScore", 0);
         ScoreText.text = "Max Score: " + maxScore.ToString();
+        LevelGenerator.Generate(GameMode);
     }
 	
 	// Update is called once per frame
@@ -70,11 +76,27 @@ public class KnightBehavior : MonoBehaviour
             Speed = 0;
 	}
 
-    public void StartGame()
+    private void StartRunning()
     {
+        _animator.enabled = true;
         _animator.SetTrigger("run");
         Speed = StartSpeed;
         Running = true;
+    }
+
+    public void StartGame()
+    {
+        GameMode = GameMode.Game;
+        LevelGenerator.Generate(GameMode);
+        StartRunning();
+        MainMenu.SetActive(false);
+    }
+
+    public void StartTutorial()
+    {
+        GameMode = GameMode.Tutorial;
+        LevelGenerator.Generate(GameMode);
+        StartRunning();
         MainMenu.SetActive(false);
     }
 
@@ -83,10 +105,39 @@ public class KnightBehavior : MonoBehaviour
         Application.Quit();
     }
 
+    public void Freeze()
+    {
+        Running = false;
+        _animator.enabled = false;
+    }
+
+    private delegate void TutorialActionHandler(DodgeType dodge);
+    private TutorialActionHandler _tutorialActionHandler;
+    private bool _waitingForTutorialInput = false;
+
+    public void ShowTutorialMessage(SkeletonScript enemy, MissScript missScript)
+    {
+        TutorialCanvas.SetActive(true);
+        TutorialCanvas.GetComponent<TutorialTextScript>().ShowHint(enemy.Monster);
+        Freeze();
+        _waitingForTutorialInput = true;
+        _tutorialActionHandler = (dodge) =>
+        {
+            if ((int)dodge == (int)enemy.Monster)
+            {
+                missScript.Miss();
+                _waitingForTutorialInput = false;
+                TutorialCanvas.SetActive(false);
+                StartRunning();
+            }
+        };
+    }
+
 	void UpdateAnimationSates()
 	{
         if (!_recieveInput)
             return;
+        var action = DodgeType.None;
 		if (Input.GetKeyDown("return"))
 		{
             StartGame();
@@ -94,23 +145,30 @@ public class KnightBehavior : MonoBehaviour
 		if (Input.GetKeyDown("a"))
 		{
 			_animator.SetTrigger("attack");
+            action = DodgeType.Attack;
 		}
 		if (Input.GetKeyDown("d"))
-		{
-			
+		{			
 			_animator.SetTrigger("block");
-		}
+            action = DodgeType.Defend;
+        }
 		if (Input.GetKeyDown("w") && grounded)
 		{
 			_animator.ResetTrigger("land");
 			_animator.SetTrigger("jump");
 			_rig.AddForce(Vector2.up*JumpForce, ForceMode2D.Impulse);
 			grounded = false;
-		}
+            action = DodgeType.Jump;
+        }
 		if (Input.GetKeyDown("s"))
 		{
 			_animator.SetTrigger("dash");
-		}
+            action = DodgeType.Dash;
+        }
+        if (_waitingForTutorialInput)
+        {
+            _tutorialActionHandler(action);
+        }
 	}
 
     public void PrepareToDie()

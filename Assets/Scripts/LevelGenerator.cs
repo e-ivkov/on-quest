@@ -45,20 +45,39 @@ public class LevelGenerator : MonoBehaviour {
 	public bool LevelReady = false;
     public LevelElement[] Level;
 	private Task _genTask;
-	
-	// Use this for initialization
-	void Start ()
-	{
-		_genTask = Task.Run(() => {
-            GenerateLevelGS();
+    private GameMode generated = GameMode.None;
+
+    public void Generate(GameMode gameMode)
+    {
+        if (gameMode == generated)
+            return;
+        _genTask = Task.Run(() => {
+            switch (gameMode)
+            {
+                case GameMode.Game:
+                    GenerateLevelGS();
+                    Debug.Log("Generated Level");
+                    break;
+                case GameMode.Tutorial:
+                    GenerateTutorial();
+                    Debug.Log("Generated Tutorial");
+                    break;
+            }
+
             LevelReady = true;
         });
-	}
+        generated = gameMode;
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    private void GenerateTutorial()
+    {
+        Level = new LevelElement[] { LevelElement.Beast, LevelElement.Harpy, LevelElement.Skeleton, LevelElement.Ogre, LevelElement.Restarter };
+    }
 	
 	/*
 	 * y = a*sin(k*x) + b*x
