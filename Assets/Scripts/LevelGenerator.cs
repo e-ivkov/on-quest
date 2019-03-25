@@ -45,25 +45,29 @@ public class LevelGenerator : MonoBehaviour {
 	public bool LevelReady = false;
     public LevelElement[] Level;
 	private Task _genTask;
-	
-	// Use this for initialization
-	void Start ()
-	{
-        var knight = GameObject.FindGameObjectWithTag("Player").GetComponent<KnightBehavior>();
-		_genTask = Task.Run(() => {
-            switch (knight.GameMode)
+    private GameMode generated = GameMode.None;
+
+    public void Generate(GameMode gameMode)
+    {
+        if (gameMode == generated)
+            return;
+        _genTask = Task.Run(() => {
+            switch (gameMode)
             {
                 case GameMode.Game:
                     GenerateLevelGS();
+                    Debug.Log("Generated Level");
                     break;
                 case GameMode.Tutorial:
                     GenerateTutorial();
+                    Debug.Log("Generated Tutorial");
                     break;
             }
-                
+
             LevelReady = true;
         });
-	}
+        generated = gameMode;
+    }
 	
 	// Update is called once per frame
 	void Update () {

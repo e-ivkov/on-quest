@@ -3,5 +3,6 @@
 public enum GameMode
 {
     Tutorial,
-    Game
+    Game,
+    None
 }

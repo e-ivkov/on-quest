@@ -8,6 +8,11 @@ public class RestarterScript : MonoBehaviour
     public const float Velocity = 0.71f;
     private float _playerVelocity;
 
+    private void Start()
+    {
+        Debug.Log("I am here");
+    }
+
     // Update is called once per frame
     void Update()
     {

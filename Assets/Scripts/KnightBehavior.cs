@@ -41,7 +41,9 @@ public class KnightBehavior : MonoBehaviour
     public GameObject TutorialCanvas;
 
     public float Distance { get => _distance; private set => _distance = value; }
-    public GameMode GameMode { get; private set; }
+    public GameMode GameMode { get; private set; } = GameMode.Game;
+
+    public LevelGenerator LevelGenerator;
 
     // Use this for initialization
     void Start ()
@@ -50,6 +52,7 @@ public class KnightBehavior : MonoBehaviour
 		_rig = GetComponent<Rigidbody2D>();
         int maxScore = PlayerPrefs.GetInt("maxScore", 0);
         ScoreText.text = "Max Score: " + maxScore.ToString();
+        LevelGenerator.Generate(GameMode);
     }
 	
 	// Update is called once per frame
@@ -84,6 +87,7 @@ public class KnightBehavior : MonoBehaviour
     public void StartGame()
     {
         GameMode = GameMode.Game;
+        LevelGenerator.Generate(GameMode);
         StartRunning();
         MainMenu.SetActive(false);
     }
@@ -91,6 +95,7 @@ public class KnightBehavior : MonoBehaviour
     public void StartTutorial()
     {
         GameMode = GameMode.Tutorial;
+        LevelGenerator.Generate(GameMode);
         StartRunning();
         MainMenu.SetActive(false);
     }

@@ -749,6 +749,7 @@ MonoBehaviour:
   MainMenu: {fileID: 1024549133}
   ScoreText: {fileID: 926334017}
   TutorialCanvas: {fileID: 866960405}
+  LevelGenerator: {fileID: 1571505721}
 --- !u!95 &782934099
 Animator:
   serializedVersion: 3
