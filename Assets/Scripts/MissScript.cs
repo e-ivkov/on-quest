@@ -20,6 +20,9 @@ public class MissScript : MonoBehaviour
         {
             if (enemy.CheckPlayerAction(collision.gameObject))
             {
+                var progress = _knight.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
+                var difficulty = 1/progress;
+                Debug.Log(difficulty);
                 Miss();
             }
         }
