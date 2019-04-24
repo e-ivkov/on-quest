@@ -40,10 +40,16 @@ public class KnightBehavior : MonoBehaviour
 
     public GameObject TutorialCanvas;
 
+    public GameObject MobileUICanvas;
+
+    public bool mobileTarget = false;
+
     public float Distance { get => _distance; private set => _distance = value; }
     public GameMode GameMode { get; private set; } = GameMode.Game;
 
     public LevelGenerator LevelGenerator;
+
+    public 
 
     // Use this for initialization
     void Start ()
@@ -90,6 +96,7 @@ public class KnightBehavior : MonoBehaviour
         LevelGenerator.Generate(GameMode);
         StartRunning();
         MainMenu.SetActive(false);
+        MobileUICanvas.SetActive(mobileTarget);
     }
 
     public void StartTutorial()
@@ -133,6 +140,29 @@ public class KnightBehavior : MonoBehaviour
         };
     }
 
+    public void Attack()
+    {
+        _animator.SetTrigger("attack");
+    }
+
+    public void Block()
+    {
+        _animator.SetTrigger("block");
+    }
+
+    public void Jump()
+    {
+        _animator.ResetTrigger("land");
+        _animator.SetTrigger("jump");
+        _rig.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+        grounded = false;
+    }
+
+    public void Dash()
+    {
+        _animator.SetTrigger("dash");
+    }
+
 	void UpdateAnimationSates()
 	{
         if (!_recieveInput)
@@ -144,25 +174,22 @@ public class KnightBehavior : MonoBehaviour
 		}
 		if (Input.GetKeyDown("a"))
 		{
-			_animator.SetTrigger("attack");
+            Attack();
             action = DodgeType.Attack;
 		}
 		if (Input.GetKeyDown("d"))
-		{			
-			_animator.SetTrigger("block");
+		{
+            Block();
             action = DodgeType.Defend;
         }
 		if (Input.GetKeyDown("w") && grounded)
 		{
-			_animator.ResetTrigger("land");
-			_animator.SetTrigger("jump");
-			_rig.AddForce(Vector2.up*JumpForce, ForceMode2D.Impulse);
-			grounded = false;
+            Jump();
             action = DodgeType.Jump;
         }
 		if (Input.GetKeyDown("s"))
 		{
-			_animator.SetTrigger("dash");
+            Dash();
             action = DodgeType.Dash;
         }
         if (_waitingForTutorialInput)
