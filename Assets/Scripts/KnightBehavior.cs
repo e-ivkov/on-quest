@@ -40,6 +40,10 @@ public class KnightBehavior : MonoBehaviour
 
     public GameObject TutorialCanvas;
 
+    public GameObject MobileUICanvas;
+
+    public bool mobileTarget = false;
+
     public float Distance { get => _distance; private set => _distance = value; }
     public GameMode GameMode { get; private set; } = GameMode.Game;
 
@@ -92,6 +96,7 @@ public class KnightBehavior : MonoBehaviour
         LevelGenerator.Generate(GameMode);
         StartRunning();
         MainMenu.SetActive(false);
+        MobileUICanvas.SetActive(mobileTarget);
     }
 
     public void StartTutorial()

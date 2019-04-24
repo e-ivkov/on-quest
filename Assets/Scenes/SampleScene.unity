@@ -1133,6 +1133,8 @@ MonoBehaviour:
   MainMenu: {fileID: 1024549133}
   ScoreText: {fileID: 926334017}
   TutorialCanvas: {fileID: 866960405}
+  MobileUICanvas: {fileID: 1270972251}
+  mobileTarget: 1
   LevelGenerator: {fileID: 1571505721}
 --- !u!95 &782934099
 Animator:
@@ -1527,7 +1529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1024549134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1910,7 +1912,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1270972252
 MonoBehaviour:
   m_ObjectHideFlags: 0
