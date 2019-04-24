@@ -6,9 +6,12 @@ public class MissScript : MonoBehaviour
 {
     private KnightBehavior _knight;
 
+    private LoggerScript _logger;
+
     public void Start()
     {
         _knight = GameObject.FindGameObjectWithTag("Player").GetComponent<KnightBehavior>();
+        _logger = GameObject.Find("Logger").GetComponent<LoggerScript>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -20,6 +23,10 @@ public class MissScript : MonoBehaviour
         {
             if (enemy.CheckPlayerAction(collision.gameObject))
             {
+                var progress = _knight.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
+                var difficulty = 1/progress;
+                _logger.LogData.estimatedDifficulty.Add(difficulty);
+                Debug.Log(difficulty);
                 Miss();
             }
         }
